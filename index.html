@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 100px;
+    padding: 100px;
+    /* display: none; */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+#cocktail-container {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+}
+
+img {
+    max-width: 300px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coctail</title>
+</head>
+<body>
+    <div id="coctail-container">
+        <h2>Случайный коктейль</h2>
+        <img src="" alt="Коктейль" id="coctail-image">
+        <p id="coctail-description"></p>
+        <button onclick="getRandomCoctail()">Получить случайный коктейль</button>
+    </div>
+</body>
+<script>
+    function getRandomCoctail() {
+    fetch ("https://www.thecocktaildb.com/api/json/v1/1/random.php")
+    .then (response => response.json())
+    //после того как запрос зевершится, используется метод then
+    //чтобы обработать полученный ответ (response) response.json()
+    //обрабатывается ответ как JSON
+    //и возращает новый объект Promise, который содержит объект JS с данными
+    .then (data => {
+        //данные из ответа доступны в этой функции обратного вызова (callback)
+        //переменная data содержит объект JS с данными случайного коктейля
+        const coctail = data.drinks[0];
+        //здесь мы извлекаем данные о первом коктейле из массива коктейлей
+        //в объект data data.drinks содержит массив коктейлей и мы берем первый объект [0]
+        const coctailName = coctail.strDrink;
+        const coctailImage = coctail.strDrinkThumb;
+        const coctailInstruction = coctail.strInstructions;
+
+        document.getElementById("coctail-image").src = coctailImage;
+        document.getElementById("coctail-description").innerText = `Название: ${coctailName}.\n Описание:  ${coctailInstruction}`
+
+    })
+}
+</script>
+</html>
